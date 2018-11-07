@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">InventoryScan</string>
+    <string name="buttonStart">Start Scanning</string>
+    <string name="buttonLookup">Lookup Station</string>
+    <string name="buttonExport">Export Data</string>
+    <string name="buttonCheck">Check</string>
+
 </resources>
