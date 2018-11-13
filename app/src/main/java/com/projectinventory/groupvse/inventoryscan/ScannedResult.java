@@ -26,7 +26,9 @@ public class ScannedResult extends AppCompatActivity {
         mIntent = getIntent();
         //add all Strings of Bundle into one ArrayList
         //Items.addAll(mIntent.getBundleExtra());
-
+        Items.add(mIntent.getStringExtra("Item0"));
+        Items.add(mIntent.getStringExtra("Item1"));
+        Items.add(mIntent.getStringExtra("Item2"));
         //show all items
     }
 

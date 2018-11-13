@@ -18,11 +18,12 @@ public class StartScanning extends AppCompatActivity {
 
     public void checkResults(View view) { //called by click or after 3 scans
         // add scan info into bundle
-        scan.putString("Item0", "value1");
-        scan.putString("Item1", "value2");
-        scan.putString("Item2", "value3");
+
         Intent intent = new Intent(this,ScannedResult.class);
         intent.putExtra("scanContent", scan);
+        intent.putExtra("Item0", "AACC,101,001,2UA5181L40");
+        intent.putExtra("Item1", "AACC,204,001,2UA5181MT8");
+        intent.putExtra("Item2", "AACC,204,001,96KYYK2");
         startActivityForResult(intent,1);
     }
 
