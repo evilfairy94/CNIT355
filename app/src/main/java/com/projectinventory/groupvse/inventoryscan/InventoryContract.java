@@ -14,7 +14,7 @@ public class InventoryContract {
         public static final String COLUMN_NAME_BUILDING = "building";
         public static final String COLUMN_NAME_ROOM = "room";
         public static final String COLUMN_NAME_SERIALNR = "serialnr";
-        public static final String COLUMN_NAME_STATIONFLAG = "isStation";
+        //public static final String COLUMN_NAME_STATIONFLAG = "isStation";
 
     }
 
