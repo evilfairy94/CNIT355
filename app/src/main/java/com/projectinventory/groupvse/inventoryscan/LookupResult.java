@@ -55,7 +55,8 @@ public class LookupResult extends AppCompatActivity {
         cursor.close();
 
         for(int i = 0; i < Items.size(); i++) {
-            allItems.append(Items.get(i).toString() + " \n");
+
+            allItems.append(Items.get(i) + "\n");
         }
 
 
