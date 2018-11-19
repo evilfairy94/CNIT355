@@ -5,8 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.ArrayList;
+
 public class StartScanning extends AppCompatActivity {
-    Bundle scan;
+    ArrayList<String> itemList = new ArrayList<String>();
+    String station;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,16 +17,19 @@ public class StartScanning extends AppCompatActivity {
         setContentView(R.layout.activity_start_scanning);
 
         //start scanning
+        //mockup data
+        station = "AACC,204,001";
+        itemList.add("2UA5181MT8");
+        itemList.add("96KYYK2");
     }
 
     public void checkResults(View view) { //called by click or after 3 scans
         // add scan info into bundle
 
         Intent intent = new Intent(this,ScannedResult.class);
-        intent.putExtra("scanContent", scan);
-        intent.putExtra("Item0", "AACC,101,001,2UA5181L40");
-        intent.putExtra("Item1", "AACC,204,001,2UA5181MT8");
-        intent.putExtra("Item2", "AACC,204,001,96KYYK2");
+        intent.putExtra("Station", station);
+        intent.putExtra("Items", itemList);
+
         startActivityForResult(intent,1);
     }
 

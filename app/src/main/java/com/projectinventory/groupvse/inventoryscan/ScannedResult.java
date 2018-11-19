@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,8 @@ public class ScannedResult extends AppCompatActivity {
     SQLiteDatabase db;
     Intent mIntent;
     ArrayList<String> Items = new ArrayList<String>();
+    String input, station, building, room;
+    TextView i1, i2, i3, i4, i5, i6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +27,28 @@ public class ScannedResult extends AppCompatActivity {
         db = mDbHelper.getWritableDatabase();
 
         mIntent = getIntent();
-        //add all Strings of Bundle into one ArrayList
-        //Items.addAll(mIntent.getBundleExtra());
-        Items.add(mIntent.getStringExtra("Item0"));
-        Items.add(mIntent.getStringExtra("Item1"));
-        Items.add(mIntent.getStringExtra("Item2"));
+        //add all Strings of Intent into one ArrayList
+        input = mIntent.getStringExtra("Station");
+        Items.addAll(mIntent.getStringArrayListExtra("Items"));
         //show all items
+        TextView stationV = (TextView) findViewById(R.id.textViewStationInfo);
+        stationV.setText(input);
+
+        i1 = (TextView) findViewById(R.id.textViewFirstScanned);
+        i2 = (TextView) findViewById(R.id.textViewSecondScanned);
+        i3 = (TextView) findViewById(R.id.textViewThirdScanned);
+
+        if(Items.size() == 3) {
+            i1.setText(Items.get(0));
+            i2.setText(Items.get(1));
+            i3.setText(Items.get(2));
+        } else if (Items.size() == 2) {
+            i1.setText(Items.get(0));
+            i2.setText(Items.get(1));
+        } else if (Items.size() == 1) {
+            i1.setText(Items.get(0));
+        }
+
     }
 
     public void addItem(View view) {
@@ -62,15 +81,36 @@ public class ScannedResult extends AppCompatActivity {
     }
 
     private void save(){
+        cut();
         for(int i = 0; i < Items.size(); i++) { // save each entry in the bundle
             ContentValues values = new ContentValues();
-            values.put(InventoryContract.InventoryEntry.COLUMN_NAME_BUILDING, Items.get(i).substring(0,3));
-            values.put(InventoryContract.InventoryEntry.COLUMN_NAME_BUILDING, Items.get(i).substring(5,7));
-            values.put(InventoryContract.InventoryEntry.COLUMN_NAME_BUILDING, Items.get(i).substring(9,11));
-            values.put(InventoryContract.InventoryEntry.COLUMN_NAME_BUILDING, Items.get(i).substring(13));
+            values.put(InventoryContract.InventoryEntry.COLUMN_NAME_BUILDING, building);
+            values.put(InventoryContract.InventoryEntry.COLUMN_NAME_ROOM, room);
+            values.put(InventoryContract.InventoryEntry.COLUMN_NAME_STATION, station);
+            values.put(InventoryContract.InventoryEntry.COLUMN_NAME_SERIALNR, Items.get(i));
 
             // Insert the new row, returning the primary key value of the new row
             long newRowId = db.insert(InventoryContract.InventoryEntry.TABLE_NAME, null, values);
         }
     }
+
+    public int getPart (String text) {
+        int part = 0;
+
+        for (int i = 0; i < text.length(); i++) {
+            if(text.charAt(i) == ',') {
+                return i;
+            }
+        }
+        return part;
+    }
+
+    public void cut() {
+       building = input.substring(0, getPart(input));
+       input = input.substring(getPart(input) + 1);
+       room = input.substring(0,getPart(input));
+       input = input.substring(getPart(input) + 1);
+       station = input;
+    }
+
 }
