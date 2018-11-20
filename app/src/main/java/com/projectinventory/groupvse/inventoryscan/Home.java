@@ -7,8 +7,6 @@ import android.view.View;
 
 public class Home extends AppCompatActivity {
 
-    //Vishrut added
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
