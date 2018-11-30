@@ -2,10 +2,14 @@ package com.projectinventory.groupvse.inventoryscan;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -14,6 +18,7 @@ public class ScannedResult extends AppCompatActivity {
     InventoryDbHelper mDbHelper;
     SQLiteDatabase db;
     Intent mIntent;
+    String selectedItem;
     ArrayList<String> Items = new ArrayList<String>();
     String input, station, building, room;
     TextView i1, i2, i3, i4, i5, i6;
@@ -34,20 +39,22 @@ public class ScannedResult extends AppCompatActivity {
         TextView stationV = (TextView) findViewById(R.id.textViewStationInfo);
         stationV.setText(input);
 
-        i1 = (TextView) findViewById(R.id.textViewFirstScanned);
-        i2 = (TextView) findViewById(R.id.textViewSecondScanned);
-        i3 = (TextView) findViewById(R.id.textViewThirdScanned);
+        final ListView listViewScan = (ListView) findViewById(R.id.listViewScanned);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_single_choice, Items);
+        listViewScan.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        listViewScan.setAdapter(adapter);
+        listViewScan.setItemChecked(0, true);
 
-        if(Items.size() == 3) {
-            i1.setText(Items.get(0));
-            i2.setText(Items.get(1));
-            i3.setText(Items.get(2));
-        } else if (Items.size() == 2) {
-            i1.setText(Items.get(0));
-            i2.setText(Items.get(1));
-        } else if (Items.size() == 1) {
-            i1.setText(Items.get(0));
-        }
+        listViewScan
+                .setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> arg0, View arg1,
+                                            int arg2, long arg3) {
+                        selectedItem = Items.get(arg2);
+
+                    }
+                });
+        selectedItem = Items.get(0);
 
     }
 
