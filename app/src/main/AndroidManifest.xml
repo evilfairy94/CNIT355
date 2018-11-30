@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.projectinventory.groupvse.inventoryscan">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
     <application
         android:allowBackup="true"
@@ -19,7 +21,12 @@
         <activity android:name=".StartScanning" />
         <activity android:name=".LookupStation" />
         <activity android:name=".LookupResult" />
-        <activity android:name=".ScannedResult"></activity>
+        <activity android:name=".ScannedResult" />
+
+        <service
+            android:name=".exporting"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
