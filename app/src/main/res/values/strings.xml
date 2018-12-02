@@ -7,6 +7,11 @@
     <string name="buttonLook">Lookup</string>
     <string name="buttonAdd">Add Item</string>
     <string name="buttonNext">Next Station</string>
-    <string name="buttonDone">Done</string>
+    <string name="buttonDone">Done Editing</string>
     <string name="buttonEdit">Edit Station</string>
+    <string name="delete_selected">Delete Selected</string>
+    <string name="textview">TextView</string>
+    <string name="edit">EDIT</string>
+    <string name="done">DONE</string>
+    <string name="station">Station</string>
 </resources>

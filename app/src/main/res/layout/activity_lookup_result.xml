@@ -4,28 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/common_google_signin_btn_text_dark_focused"
     tools:context=".LookupResult"
     tools:layout_editor_absoluteY="81dp">
 
     <Button
         android:id="@+id/button9"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="20dp"
-        android:text="EDIT"
+        android:layout_marginStart="41dp"
+        android:layout_marginEnd="34dp"
+        android:background="#015500"
+        android:text="@string/edit"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button10"
         app:layout_constraintEnd_toStartOf="@+id/button10"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button10"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="52dp"
+        android:background="#015500"
         android:onClick="doneWithIt"
-        android:text="DONE"
+        android:text="@string/done"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button9"
@@ -33,13 +38,15 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="128dp"
+        android:layout_height="21dp"
         android:layout_marginTop="32dp"
-        android:layout_marginBottom="40dp"
-        android:text="Station"
+        android:layout_marginBottom="28dp"
+        android:text="@string/station"
+        android:textColor="@color/common_google_signin_btn_text_dark_default"
         app:layout_constraintBottom_toTopOf="@+id/editText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.562"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,7 +56,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="32dp"
         android:ems="10"
         android:enabled="false"
         android:inputType="textPersonName"

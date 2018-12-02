@@ -1,5 +1,6 @@
 package com.projectinventory.groupvse.inventoryscan;
 
+import android.content.ClipData;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -21,7 +22,7 @@ public class ScannedResult extends AppCompatActivity {
     String selectedItem;
     ArrayList<String> Items = new ArrayList<String>();
     String input, station, building, room;
-    TextView i1, i2, i3, i4, i5, i6;
+    ListView listViewScan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class ScannedResult extends AppCompatActivity {
         TextView stationV = (TextView) findViewById(R.id.textViewStationInfo);
         stationV.setText(input);
 
-        final ListView listViewScan = (ListView) findViewById(R.id.listViewScanned);
+        listViewScan = (ListView) findViewById(R.id.listViewScanned);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_single_choice, Items);
         listViewScan.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -58,12 +59,16 @@ public class ScannedResult extends AppCompatActivity {
 
     }
 
+
+
+
+
     public void addItem(View view) {
         //finish and give bundle back and info to scan 1 more item
         save();
         Intent data = new Intent();
         data.putExtra("clicked", "ADD");
-       // data.putExtra(mIntent); give bundle back @todo
+        // data.putExtra(mIntent); give bundle back @todo
         setResult(RESULT_OK, data);
         finish();
     }
@@ -87,9 +92,9 @@ public class ScannedResult extends AppCompatActivity {
 
     }
 
-    private void save(){
+    private void save() {
         cut();
-        for(int i = 0; i < Items.size(); i++) { // save each entry in the bundle
+        for (int i = 0; i < Items.size(); i++) { // save each entry in the bundle
             ContentValues values = new ContentValues();
             values.put(InventoryContract.InventoryEntry.COLUMN_NAME_BUILDING, building);
             values.put(InventoryContract.InventoryEntry.COLUMN_NAME_ROOM, room);
@@ -101,11 +106,11 @@ public class ScannedResult extends AppCompatActivity {
         }
     }
 
-    public int getPart (String text) {
+    public int getPart(String text) {
         int part = 0;
 
         for (int i = 0; i < text.length(); i++) {
-            if(text.charAt(i) == ',') {
+            if (text.charAt(i) == ',') {
                 return i;
             }
         }
@@ -113,11 +118,26 @@ public class ScannedResult extends AppCompatActivity {
     }
 
     public void cut() {
-       building = input.substring(0, getPart(input));
-       input = input.substring(getPart(input) + 1);
-       room = input.substring(0,getPart(input));
-       input = input.substring(getPart(input) + 1);
-       station = input;
+        building = input.substring(0, getPart(input));
+        input = input.substring(getPart(input) + 1);
+        room = input.substring(0, getPart(input));
+        input = input.substring(getPart(input) + 1);
+        station = input;
+    }
+
+    public void deleteItem(View view) {
+        if(!Items.isEmpty()) {
+        Items.remove(Items.indexOf(selectedItem));
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_single_choice, Items);
+        listViewScan.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        listViewScan.setAdapter(adapter);
+        listViewScan.setItemChecked(0, true);
+        if(!Items.isEmpty()) {
+            selectedItem = Items.get(0);
+        }}
+
     }
 
 }
