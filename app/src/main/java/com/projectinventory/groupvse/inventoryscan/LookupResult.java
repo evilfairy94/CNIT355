@@ -24,6 +24,7 @@ public class LookupResult extends AppCompatActivity {
     String input, station, building, room;
     EditText allItems;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +56,7 @@ public class LookupResult extends AppCompatActivity {
 
         while (cursor.moveToNext()) {
             item.append(cursor.getString(cursor.getColumnIndexOrThrow(InventoryContract.InventoryEntry.COLUMN_NAME_SERIALNR)));
+            Items.add(cursor.getString(cursor.getColumnIndexOrThrow(InventoryContract.InventoryEntry.COLUMN_NAME_SERIALNR)));
             item.append("\n");
         }
 
@@ -99,6 +101,21 @@ public class LookupResult extends AppCompatActivity {
     }
 
     public void editItem(View view) {
-        Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this,StartScanning.class);
+        intent.putExtra("Station", station);
+        intent.putExtra("Items", Items);
+        startActivityForResult(intent,1);
+    }
+
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+
+        if((requestCode == 1) && (resultCode == RESULT_OK)) {
+            if(data.getStringExtra("clicked").equals("DONE")) {
+                Intent data2 = new Intent();
+                data2.putExtra("clicked", "DONE");
+                setResult(RESULT_OK, data2);
+                finish();
+            }
+        }
     }
 }

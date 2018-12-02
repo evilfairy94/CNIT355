@@ -30,12 +30,12 @@ public class Home extends AppCompatActivity {
 
     public void startScanning(View view) {
         Intent mIntent = new Intent(this, StartScanning.class);
-        startActivity(mIntent);
+        startActivityForResult(mIntent,1);
     }
 
     public void lookup(View view) {
         Intent mIntent = new Intent(this, LookupStation.class);
-        startActivity(mIntent);
+        startActivityForResult(mIntent,1);
     }
 
     public void exportData(View view) {
@@ -57,16 +57,17 @@ public class Home extends AppCompatActivity {
             String query = "select * from " + InventoryContract.InventoryEntry.TABLE_NAME;
 
             Cursor cursor = db.rawQuery(query, new String[]{});
-            StringBuffer item = new StringBuffer();
+
 
             while (cursor.moveToNext()) {
-
+                StringBuffer item = new StringBuffer();
                 item.append(cursor.getString(cursor.getColumnIndexOrThrow(InventoryContract.InventoryEntry.COLUMN_NAME_BUILDING)) + ", ");
                 item.append(cursor.getString(cursor.getColumnIndexOrThrow(InventoryContract.InventoryEntry.COLUMN_NAME_ROOM)) + ", ");
                 item.append(cursor.getString(cursor.getColumnIndexOrThrow(InventoryContract.InventoryEntry.COLUMN_NAME_STATION)) + ", ");
                 item.append(cursor.getString(cursor.getColumnIndexOrThrow(InventoryContract.InventoryEntry.COLUMN_NAME_SERIALNR)));
                 item.append("\n");
                 Items.add(item.toString());
+
             }
             cursor.close();
 
@@ -93,6 +94,13 @@ public class Home extends AppCompatActivity {
 
         String sql = "Delete FROM " + InventoryContract.InventoryEntry.TABLE_NAME;
         db.execSQL(sql);
+    }
+
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+
+        if((requestCode == 1) && (resultCode == RESULT_OK)) {
+
+        }
     }
 }
 
