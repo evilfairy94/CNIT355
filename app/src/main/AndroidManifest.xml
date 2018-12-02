@@ -32,12 +32,12 @@
         <activity android:name=".StartScanning" />
         <activity android:name=".LookupStation" />
         <activity android:name=".LookupResult" />
-        <activity android:name=".ScannedResult"></activity>
+        <activity android:name=".ScannedResult">
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
-
+        </activity>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -47,12 +47,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-        <activity android:name=".ScannedResult" />
 
-        <service
-            android:name=".exporting"
-            android:enabled="true"
-            android:exported="true"></service>
     </application>
 
 
