@@ -7,8 +7,10 @@ import android.provider.BaseColumns;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ public class LookupResult extends AppCompatActivity {
     Intent mIntent;
     ArrayList<String> Items = new ArrayList<String>();
     String input, station, building, room;
+    EditText allItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +37,9 @@ public class LookupResult extends AppCompatActivity {
         input = mIntent.getStringExtra("Station");
         //show all items
         TextView stationV = (TextView) findViewById(R.id.textView);
+        Button edit = (Button) findViewById(R.id.button9);
         stationV.setText(input);
-        EditText allItems = (EditText) findViewById(R.id.editText);
+        allItems = (EditText) findViewById(R.id.editText);
 
         cut();
 
@@ -47,18 +51,22 @@ public class LookupResult extends AppCompatActivity {
 
         Cursor cursor = db.rawQuery(query, new String[] {});
 
+        StringBuffer item = new StringBuffer();
 
-        while(cursor.moveToNext()) {
-            String item = cursor.getString(cursor.getColumnIndexOrThrow(InventoryContract.InventoryEntry.COLUMN_NAME_SERIALNR));
-            Items.add(item);
+        while (cursor.moveToNext()) {
+            item.append(cursor.getString(cursor.getColumnIndexOrThrow(InventoryContract.InventoryEntry.COLUMN_NAME_SERIALNR)));
+            item.append("\n");
         }
+
+        if(item.length() == 0) {
+            allItems.append("Station not found");
+            edit.setClickable(false);
+            edit.setAlpha(.5f);
+        } else {
+            allItems.append(item);
+        }
+
         cursor.close();
-
-        for(int i = 0; i < Items.size(); i++) {
-
-            allItems.append(Items.get(i)+"\n");
-        }
-
 
     }
 
@@ -88,5 +96,9 @@ public class LookupResult extends AppCompatActivity {
         setResult(RESULT_OK, data);
         finish();
 
+    }
+
+    public void editItem(View view) {
+        Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
     }
 }
