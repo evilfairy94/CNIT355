@@ -14,6 +14,7 @@
     <string name="edit">EDIT</string>
     <string name="done">DONE</string>
     <string name="station">Station</string>
+    <string name="inventory_scanner">Inventory Scanner</string>
     <string name="barcode">Barcode</string>
     <string name="scan">Scan</string>
 </resources>
