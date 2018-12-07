@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class StartScanning extends AppCompatActivity {
-    ArrayList<String> itemList = new ArrayList<String>();
+    ArrayList<String> itemList = new ArrayList<>();
     String station;
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
@@ -32,6 +32,7 @@ public class StartScanning extends AppCompatActivity {
     SurfaceView surfaceView;
     TextView barcodeVal;
     String intentData;
+    int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class StartScanning extends AppCompatActivity {
         Button check = (Button) findViewById(R.id.button4);
         Intent LookupIntent = getIntent();
 
+        //when called by Lookup add information and go to Scanned Result
         try {
         if(!LookupIntent.getExtras().isEmpty()) {
             station = LookupIntent.getStringExtra("Station");
@@ -52,15 +54,15 @@ public class StartScanning extends AppCompatActivity {
 
             //start scanning
             //mockup data
-            station = "AACC,204,001";
-            itemList.add("2UA5181MT8");
-            itemList.add("96KYYK2");
+            //station = "AACC,204,001";
+           // itemList.add("2UA5181MT8");
+           // itemList.add("96KYYK2");
 
 
         surfaceView = findViewById(R.id.surfaceView);
         barcodeVal = findViewById(R.id.textView2);
+        index = 0;
         initBarcodeScanning();
-
     }
 
     private void initBarcodeScanning() {
@@ -116,14 +118,24 @@ public class StartScanning extends AppCompatActivity {
                 if (barcodes.size() != 0) {
 
 
-                    barcodeVal.post(new Runnable() {
+                    /*barcodeVal.post(new Runnable() {
 
                         @Override
-                        public void run() {
+                        public void run() {*/
                                 intentData = barcodes.valueAt(0).displayValue;
                                 barcodeVal.setText(intentData);
-                        }
-                    });
+                                if(index == 0) {
+                                    station = intentData;
+                                    intentData="";
+                                    index++;
+                                } else {
+                                    if(!itemList.contains(intentData)) {
+                                        itemList.add(intentData);
+                                        index++;
+                                    }
+                                }
+                       // }
+                    //});
 
                 }
 
@@ -131,8 +143,9 @@ public class StartScanning extends AppCompatActivity {
         });
     }
 
-    public void checkResults(View view) { //called by click or after 3 scans
-        // add scan info into bundle
+    public void checkResults(View view) {
+        //on buttonclick Save all scanned Information to Intent
+        // call ScannedResult
 
         Intent intent = new Intent(this,ScannedResult.class);
         intent.putExtra("Station", station);
@@ -141,25 +154,33 @@ public class StartScanning extends AppCompatActivity {
         startActivityForResult(intent,1);
     }
 
+
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
-
+        //when Result from ScannedResult is DONE return to homescreen
+        //when Next scan new station with items
+        //when Add scan additional items to current station
         if((requestCode == 1) && (resultCode == RESULT_OK)) {
-            if(data.getStringExtra("clicked").equals("DONE")) {
-                Intent data2 = new Intent();
-                data2.putExtra("clicked", "DONE");
-                setResult(RESULT_OK, data2);
-                finish();
-            } else if (data.getStringExtra("clicked").equals("NEXT")) {
-                //if next station scan 3
-                //TODO scan3
-            } else if (data.getStringExtra("clicked").equals("ADD")) {
-                Intent LookupIntent = getIntent();
-
-                if(!LookupIntent.getExtras().isEmpty()) {
-                    station = LookupIntent.getStringExtra("Station");
-                    itemList.addAll(LookupIntent.getStringArrayListExtra("Items"));
-                    //TODO Scan
-                }
+            switch (data.getStringExtra("clicked")) {
+                case "DONE":
+                    Intent data2 = new Intent();
+                    data2.putExtra("clicked", "DONE");
+                    setResult(RESULT_OK, data2);
+                    finish();
+                    break;
+                case "NEXT":
+                    index = 0;
+                    station = "";
+                    itemList.clear();
+                    initBarcodeScanning();
+                    break;
+                case "ADD":
+                    if(!data.getExtras().isEmpty()) {
+                        station = data.getStringExtra("Station");
+                        itemList.clear();
+                        itemList.addAll(data.getStringArrayListExtra("Items"));
+                        index = 1;
+                    }
+                    break;
             }
         }
     }

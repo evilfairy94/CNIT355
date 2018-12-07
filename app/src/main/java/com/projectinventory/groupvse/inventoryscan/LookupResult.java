@@ -30,20 +30,24 @@ public class LookupResult extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lookup_result);
 
+        //instantiate a Database to read from
         mDbHelper = new InventoryDbHelper(getApplicationContext());
         db = mDbHelper.getReadableDatabase();
 
+        //get Information of previous scan
         mIntent = getIntent();
-        //add all Strings of Intent into one ArrayList
         input = mIntent.getStringExtra("Station");
-        //show all items
+
+
         TextView stationV = (TextView) findViewById(R.id.textView);
         Button edit = (Button) findViewById(R.id.button9);
         stationV.setText(input);
         allItems = (EditText) findViewById(R.id.editText);
 
+        //extract information from scan
         cut();
 
+        //query to find all items to a station
         String query = "select " + InventoryContract.InventoryEntry.COLUMN_NAME_SERIALNR
                 +" from " + InventoryContract.InventoryEntry.TABLE_NAME + " where "
                 + InventoryContract.InventoryEntry.COLUMN_NAME_BUILDING + " = '" + building + "' AND "
@@ -55,11 +59,13 @@ public class LookupResult extends AppCompatActivity {
         StringBuffer item = new StringBuffer();
 
         while (cursor.moveToNext()) {
+            //get all items into cache and show them on GUI
             item.append(cursor.getString(cursor.getColumnIndexOrThrow(InventoryContract.InventoryEntry.COLUMN_NAME_SERIALNR)));
             Items.add(cursor.getString(cursor.getColumnIndexOrThrow(InventoryContract.InventoryEntry.COLUMN_NAME_SERIALNR)));
             item.append("\n");
         }
 
+        //when nothing was found in DB show
         if(item.length() == 0) {
             allItems.append("Station not found");
             edit.setClickable(false);
@@ -72,6 +78,7 @@ public class LookupResult extends AppCompatActivity {
 
     }
 
+    //extract building, room, station from input String
     public void cut() {
         building = input.substring(0, getPart(input));
         input = input.substring(getPart(input) + 1);
@@ -80,6 +87,7 @@ public class LookupResult extends AppCompatActivity {
         station = input;
     }
 
+    //returns the index of the next "," Character in a String
     public int getPart (String text) {
         int part = 0;
 
@@ -92,7 +100,8 @@ public class LookupResult extends AppCompatActivity {
     }
 
     public void doneWithIt(View view) {
-        //finish after saving to database
+
+        // finish activity to return to home screen
         Intent data = new Intent();
         data.putExtra("clicked", "DONE");
         setResult(RESULT_OK, data);
@@ -101,6 +110,7 @@ public class LookupResult extends AppCompatActivity {
     }
 
     public void editItem(View view) {
+        //start ScannedResult Activity to edit Station
         Intent intent = new Intent(this,StartScanning.class);
         intent.putExtra("Station", station);
         intent.putExtra("Items", Items);
@@ -108,7 +118,7 @@ public class LookupResult extends AppCompatActivity {
     }
 
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
-
+        // finish activity to return to home screen after editing Station
         if((requestCode == 1) && (resultCode == RESULT_OK)) {
             if(data.getStringExtra("clicked").equals("DONE")) {
                 Intent data2 = new Intent();

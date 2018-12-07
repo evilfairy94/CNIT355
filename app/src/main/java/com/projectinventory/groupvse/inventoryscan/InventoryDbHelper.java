@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class InventoryDbHelper extends SQLiteOpenHelper {
 
+    //query to create table
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + InventoryContract.InventoryEntry.TABLE_NAME + " (" +
                     InventoryContract.InventoryEntry._ID + "INTEGER PRIMARY KEY," +
@@ -14,10 +15,11 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
                     InventoryContract.InventoryEntry.COLUMN_NAME_ROOM + " TEXT," +
                     InventoryContract.InventoryEntry.COLUMN_NAME_SERIALNR + " TEXT)";
 
+
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + InventoryContract.InventoryEntry.TABLE_NAME;
 
-    // If you change the database schema, you must increment the database version.
+
         public static final int DATABASE_VERSION = 1;
         public static final String DATABASE_NAME = "Inventory.db";
 
@@ -28,8 +30,6 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
             db.execSQL(SQL_CREATE_ENTRIES);
         }
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            // This database is only a cache for online data, so its upgrade policy is
-            // to simply to discard the data and start over
             db.execSQL(SQL_DELETE_ENTRIES);
             onCreate(db);
         }
