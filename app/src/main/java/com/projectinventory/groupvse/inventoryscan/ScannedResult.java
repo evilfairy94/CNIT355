@@ -44,6 +44,8 @@ public class ScannedResult extends AppCompatActivity {
         TextView stationV = (TextView) findViewById(R.id.textViewStationInfo);
         stationV.setText(input);
 
+
+        //put items in a list with a radio button so an item can be selected during edit
         listViewScan = (ListView) findViewById(R.id.listViewScanned);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_single_choice, Items);
@@ -169,7 +171,7 @@ public class ScannedResult extends AppCompatActivity {
         input = input.substring(getPart(input) + 1);
         station = input;
     }
-
+//method to delete selected item from listview and repopulate list with remaining items
     public void deleteItem(View view) {
         if(!Items.isEmpty()) {
             lostItems.add(selectedItem);

@@ -122,6 +122,7 @@ public class StartScanning extends AppCompatActivity {
                         public void run() {
                                 intentData = barcodes.valueAt(0).displayValue;
                                 barcodeVal.setText(intentData);
+
                         }
                     });
 

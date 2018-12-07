@@ -7,48 +7,51 @@
     android:background="@color/common_google_signin_btn_text_dark_focused"
     tools:context=".StartScanning">
 
+    <!--This screen is called when the Start Scanning button on the Home screen is pressed-->
+
+    <!--Code for Check Button-->
     <Button
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="16dp"
         android:background="#015500"
         android:onClick="checkResults"
         android:text="@string/buttonCheck"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.486"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/surfaceView"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <!--This is the container that will allow the camera and scanner functions to work-->
     <SurfaceView
         android:id="@+id/surfaceView"
         android:layout_width="0dp"
-        android:layout_height="228dp"
+        android:layout_height="367dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--Storage location for the Station ID-->
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="166dp"
-        android:layout_height="40dp"
+        android:layout_width="273dp"
+        android:layout_height="26dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Barcode"
+        android:text="@string/barcode"
         android:textAlignment="center"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         app:layout_constraintBottom_toTopOf="@+id/surfaceView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 </android.support.constraint.ConstraintLayout>

@@ -8,6 +8,8 @@
     tools:context=".LookupStation"
     tools:layout_editor_absoluteY="81dp">
 
+    <!--This screen is for the scanning of an ID to lookup the data stored for the ID-->
+    <!--Code for Lookup button-->
     <Button
         android:id="@+id/button5"
         android:layout_width="wrap_content"
@@ -22,6 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/surfaceView2" />
 
+    <!--The SurfaceView is used for the camera and scanning functions-->
     <SurfaceView
         android:id="@+id/surfaceView2"
         android:layout_width="0dp"

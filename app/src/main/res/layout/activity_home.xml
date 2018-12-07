@@ -9,12 +9,28 @@
     tools:context=".Home"
     tools:layout_editor_absoluteY="81dp">
 
+    <!--Title Screen and home of project. We used green on black background to make the buttons more pleasing to the eye-->
+
+    <!--Title of project-->
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="37dp"
+        android:text="@string/inventory_scanner"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--//Start Scanning button code-->
     <Button
         android:id="@+id/button"
         android:layout_width="206dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="152dp"
         android:background="#015500"
         android:onClick="startScanning"
         android:text="@string/buttonStart"
@@ -23,6 +39,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--// Lookup Station button code-->
     <Button
         android:id="@+id/button2"
         android:layout_width="206dp"
@@ -35,11 +52,13 @@
         app:layout_constraintStart_toStartOf="@+id/button"
         app:layout_constraintTop_toBottomOf="@+id/button" />
 
+
+    <!--//Export Data Button Code-->
     <Button
         android:id="@+id/button3"
         android:layout_width="206dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="36dp"
         android:background="#015500"
         android:onClick="exportData"
         android:text="@string/buttonExport"
@@ -48,4 +67,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2" />
+
 </android.support.constraint.ConstraintLayout>
