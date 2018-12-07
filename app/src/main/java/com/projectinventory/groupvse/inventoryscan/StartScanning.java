@@ -10,6 +10,8 @@ import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,11 +38,24 @@ public class StartScanning extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_scanning);
 
-        //start scanning
-        //mockup data
-        station = "AACC,204,001";
-        itemList.add("2UA5181MT8");
-        itemList.add("96KYYK2");
+        Button check = (Button) findViewById(R.id.button4);
+        Intent LookupIntent = getIntent();
+
+        try {
+        if(!LookupIntent.getExtras().isEmpty()) {
+            station = LookupIntent.getStringExtra("Station");
+            itemList.addAll(LookupIntent.getStringArrayListExtra("Items"));
+            check.performClick();
+        }  } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+            //start scanning
+            //mockup data
+            station = "AACC,204,001";
+            itemList.add("2UA5181MT8");
+            itemList.add("96KYYK2");
+
 
         surfaceView = findViewById(R.id.surfaceView);
         barcodeVal = findViewById(R.id.textView2);
@@ -130,11 +145,21 @@ public class StartScanning extends AppCompatActivity {
 
         if((requestCode == 1) && (resultCode == RESULT_OK)) {
             if(data.getStringExtra("clicked").equals("DONE")) {
+                Intent data2 = new Intent();
+                data2.putExtra("clicked", "DONE");
+                setResult(RESULT_OK, data2);
                 finish();
             } else if (data.getStringExtra("clicked").equals("NEXT")) {
                 //if next station scan 3
+                //TODO scan3
             } else if (data.getStringExtra("clicked").equals("ADD")) {
-                //if add item scan one
+                Intent LookupIntent = getIntent();
+
+                if(!LookupIntent.getExtras().isEmpty()) {
+                    station = LookupIntent.getStringExtra("Station");
+                    itemList.addAll(LookupIntent.getStringArrayListExtra("Items"));
+                    //TODO Scan
+                }
             }
         }
     }

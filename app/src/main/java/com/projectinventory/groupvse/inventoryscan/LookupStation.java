@@ -27,7 +27,7 @@ public class LookupStation extends AppCompatActivity {
 
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
 
-        if((requestCode == 1) && (resultCode == RESULT_OK)) {
+        if((requestCode == 2) && (resultCode == RESULT_OK)) {
             if(data.getStringExtra("clicked").equals("DONE")) {
                 finish();
             } else if (data.getStringExtra("clicked").equals("EDIT")) {
