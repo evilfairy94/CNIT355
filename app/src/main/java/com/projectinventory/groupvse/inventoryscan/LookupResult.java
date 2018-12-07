@@ -7,8 +7,11 @@ import android.provider.BaseColumns;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,9 +24,8 @@ public class LookupResult extends AppCompatActivity {
     SQLiteDatabase db;
     Intent mIntent;
     ArrayList<String> Items = new ArrayList<String>();
-    String input, station, building, room;
-    EditText allItems;
-
+    String input, station, building, room, whole;
+    ListView ListViewItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,14 @@ public class LookupResult extends AppCompatActivity {
         TextView stationV = (TextView) findViewById(R.id.textView);
         Button edit = (Button) findViewById(R.id.button9);
         stationV.setText(input);
-        allItems = (EditText) findViewById(R.id.editText);
+
+        ListViewItems = (ListView) findViewById(R.id.listViewScanned);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, Items);
+        ListViewItems.setChoiceMode(ListView.NOT_FOCUSABLE);
+        ListViewItems.setAdapter(adapter);
+
+
 
         //extract information from scan
         cut();
@@ -67,11 +76,9 @@ public class LookupResult extends AppCompatActivity {
 
         //when nothing was found in DB show
         if(item.length() == 0) {
-            allItems.append("Station not found");
+            Items.add( "Nothing is found");
             edit.setClickable(false);
             edit.setAlpha(.5f);
-        } else {
-            allItems.append(item);
         }
 
         cursor.close();
@@ -80,6 +87,7 @@ public class LookupResult extends AppCompatActivity {
 
     //extract building, room, station from input String
     public void cut() {
+        whole = input;
         building = input.substring(0, getPart(input));
         input = input.substring(getPart(input) + 1);
         room = input.substring(0,getPart(input));
@@ -112,7 +120,7 @@ public class LookupResult extends AppCompatActivity {
     public void editItem(View view) {
         //start ScannedResult Activity to edit Station
         Intent intent = new Intent(this,StartScanning.class);
-        intent.putExtra("Station", station);
+        intent.putExtra("Station", whole);
         intent.putExtra("Items", Items);
         startActivityForResult(intent,1);
     }

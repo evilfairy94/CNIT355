@@ -1,8 +1,12 @@
 package com.projectinventory.groupvse.inventoryscan;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,7 +29,7 @@ import java.util.ArrayList;
 
 public class StartScanning extends AppCompatActivity {
     ArrayList<String> itemList = new ArrayList<>();
-    String station;
+    String station = new String();
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
     private static final int REQUEST_CAMERA_PERMISSION = 201;
@@ -33,6 +37,7 @@ public class StartScanning extends AppCompatActivity {
     TextView barcodeVal;
     String intentData;
     int index;
+    Vibrator v;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,7 @@ public class StartScanning extends AppCompatActivity {
 
         Button check = (Button) findViewById(R.id.button4);
         Intent LookupIntent = getIntent();
+         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         //when called by Lookup add information and go to Scanned Result
         try {
@@ -52,11 +58,6 @@ public class StartScanning extends AppCompatActivity {
             e.printStackTrace();
         }
 
-            //start scanning
-            //mockup data
-            //station = "AACC,204,001";
-           // itemList.add("2UA5181MT8");
-           // itemList.add("96KYYK2");
 
 
         surfaceView = findViewById(R.id.surfaceView);
@@ -117,41 +118,38 @@ public class StartScanning extends AppCompatActivity {
 
                 if (barcodes.size() != 0) {
 
-
-                    /*barcodeVal.post(new Runnable() {
-
-                        @Override
-                        public void run() {*/
                                 intentData = barcodes.valueAt(0).displayValue;
-                                barcodeVal.setText(intentData);
+                                handler.sendEmptyMessage(0);
                                 if(index == 0) {
                                     station = intentData;
+                                    v.vibrate(100);
                                     intentData="";
                                     index++;
                                 } else {
-                                    if(!itemList.contains(intentData)) {
+                                    if(!itemList.contains(intentData) && !intentData.equals(station)) {
                                         itemList.add(intentData);
+                                        v.vibrate(100);
                                         index++;
                                     }
                                 }
-                       // }
-                    //});
+
 
                 }
 
             }
         });
+
     }
 
     public void checkResults(View view) {
         //on buttonclick Save all scanned Information to Intent
         // call ScannedResult
-
+        if(!station.isEmpty()) {
         Intent intent = new Intent(this,ScannedResult.class);
         intent.putExtra("Station", station);
         intent.putExtra("Items", itemList);
 
-        startActivityForResult(intent,1);
+        startActivityForResult(intent,1);}
     }
 
 
@@ -184,5 +182,13 @@ public class StartScanning extends AppCompatActivity {
             }
         }
     }
+
+    final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            barcodeVal.setText(intentData);
+        }
+    };
+
 
 }

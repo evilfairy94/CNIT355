@@ -1,8 +1,12 @@
 package com.projectinventory.groupvse.inventoryscan;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,7 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class LookupStation extends AppCompatActivity {
-    String station;
+    String station = new String();
     ArrayList<String> itemList = new ArrayList<>();
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
@@ -32,16 +36,19 @@ public class LookupStation extends AppCompatActivity {
     TextView barcodeVal;
     String intentData;
     int index;
+    Vibrator v;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lookup_station);
 
+        v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         surfaceView = findViewById(R.id.surfaceView2);
         barcodeVal = findViewById(R.id.textView3);
         index = 0;
         initBarcodeScanning();
+
     }
 
     private void initBarcodeScanning() {
@@ -97,17 +104,12 @@ public class LookupStation extends AppCompatActivity {
                 if (barcodes.size() != 0) {
 
                     intentData = barcodes.valueAt(0).displayValue;
+                    handler.sendEmptyMessage(0);
 
-                    if(index == 0) {
-                        station = intentData;
-                        intentData="";
-                        index++;
-                    } else {
-                        if(!itemList.contains(intentData)) {
-                            itemList.add(intentData);
-                            index++;
-                        }
-                    }
+                    if(!station.equals(intentData)) {
+                    station = intentData;
+
+                    v.vibrate(100);}
 
                 }
 
@@ -136,4 +138,11 @@ public class LookupStation extends AppCompatActivity {
             }
         }
     }
+
+    final Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            barcodeVal.setText(intentData);
+        }
+    };
 }
