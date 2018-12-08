@@ -68,20 +68,22 @@ public class StartScanning extends AppCompatActivity {
 
     private void initBarcodeScanning() {
         Toast.makeText(getApplicationContext(), "Barcode Scanner started", Toast.LENGTH_SHORT).show();
-
+        //instantiate a barcode detecter API
         barcodeDetector = new BarcodeDetector.Builder(this)
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
                 .build();
-
+        //include the phones camera into the app
         cameraSource = new CameraSource.Builder(this, barcodeDetector)
                 .setRequestedPreviewSize(1920, 1080)
-                .setAutoFocusEnabled(true) //you should add this feature
+                .setAutoFocusEnabled(true)
                 .build();
 
+        //integrate surface view to act as a container to access camera
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 try {
+                    //get permission to access phone camera
                     if (ActivityCompat.checkSelfPermission(StartScanning.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                         cameraSource.start(surfaceView.getHolder());
                     } else {
@@ -116,16 +118,21 @@ public class StartScanning extends AppCompatActivity {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
 
+                //whenever a barcode is detected
                 if (barcodes.size() != 0) {
-
                                 intentData = barcodes.valueAt(0).displayValue;
+
+                                //give barcode to GUI
                                 handler.sendEmptyMessage(0);
                                 if(index == 0) {
+                                    // Add barcode as station that you want to add
                                     station = intentData;
+                                    // vibrate for a second to give feedback that scanning was successful
                                     v.vibrate(100);
                                     intentData="";
                                     index++;
                                 } else {
+                                    //When a new item is detected add it to a cache list and vibrate for a second
                                     if(!itemList.contains(intentData) && !intentData.equals(station)) {
                                         itemList.add(intentData);
                                         v.vibrate(100);
@@ -183,6 +190,7 @@ public class StartScanning extends AppCompatActivity {
         }
     }
 
+    //handle GUI update to view barcode
     final Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
